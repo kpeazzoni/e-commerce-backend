@@ -35,9 +35,9 @@ router.post('/', async (req, res) => {
   // create a new category
   try {
     const newCategory = await Category.create(req.body);
-    res.status(200).json(newCategory, "it was created");
+    res.status(200).json(newCategory);
   } catch (error) {
-    res.status(400).json(error,'Category not created');
+    res.status(400).json('Category not created');
   }
 });
 
@@ -51,7 +51,7 @@ try {
   })
   res.status(200).json(allCategories);
 } catch (error) {
- res.status(400).json(error, "category not updated") 
+ res.status(400).json("category not updated") 
 }
 });
 
@@ -64,7 +64,7 @@ try {
     }
   })
   if (!deleteCategory) {
-    res.status(404).json({message: 'no category found with this id!'});
+    res.status(404).json('no category found with this id!');
     return;
   }
   res.status(200).json(deleteCategory);
