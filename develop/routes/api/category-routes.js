@@ -35,18 +35,42 @@ router.post('/', async (req, res) => {
   // create a new category
   try {
     const newCategory = await Category.create(req.body);
-    res.status(200).json(newCategory);
+    res.status(200).json(newCategory, "it was created");
   } catch (error) {
-    res.status(400).json(err,'Category not created');
+    res.status(400).json(error,'Category not created');
   }
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   // update a category by its `id` value
+try {
+  const allCategories = await Category.update (req.body,{
+    where: {
+      id: req.params.id
+    }
+  })
+  res.status(200).json(allCategories);
+} catch (error) {
+ res.status(400).json(error, "category not updated") 
+}
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
+try {
+  const deleteCategory = await Category.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  if (!deleteCategory) {
+    res.status(404).json({message: 'no category found with this id!'});
+    return;
+  }
+  res.status(200).json(deleteCategory);
+} catch (error) {
+res.status(500).json(error);
+}
 });
 
 module.exports = router;
